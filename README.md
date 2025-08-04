@@ -44,8 +44,8 @@ npm run dev
 
 ## 🔗 Demo & Testing
 
-**Live Application**:  
-**API Documentation**: https://docs.google.com/document/d/1ZWNsdcuB1UENtR1UkNZyVJ0Swc2I8lf24j4_g7lBU1A/edit?usp=sharing
+**Live Application**:  https://patient-note-backend.onrender.com
+**System Design Documentation**: https://docs.google.com/document/d/1ZWNsdcuB1UENtR1UkNZyVJ0Swc2I8lf24j4_g7lBU1A/edit?usp=sharing
 
 **Test Credentials** (Auto-seeded):
 - 1 Doctor account + 5 Patient records  
