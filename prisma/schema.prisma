@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum NoteSource {
+  MANUAL
+  FILE_UPLOAD
+}
+
+enum FileStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+model Doctor {
+  id        String     @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String     @unique
+  password  String
+  notes     CaseNote[]
+  files     File[]
+}
+
+model Patient {
+  id          String     @id @default(cuid())
+  firstName   String
+  lastName    String
+  nhs         String     @unique
+  dateOfBirth DateTime
+  notes       CaseNote[]
+  files       File[]
+}
+
+model File {
+  id           String     @id @default(cuid())
+  filename     String
+  originalName String
+  s3Key        String?
+  mimeType     String
+  size         Int
+  status       FileStatus @default(PENDING)
+  scannedText  String? 
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  // Relationships
+  patientId    String
+  patient      Patient    @relation(fields: [patientId], references: [id])
+  doctorId     String
+  doctor       Doctor     @relation(fields: [doctorId], references: [id])
+  caseNote     CaseNote? 
+}
+
+model CaseNote {
+  id        String     @id @default(cuid())
+  title     String
+  content   String
+  source    NoteSource @default(MANUAL)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  // Relationships
+  doctorId  String
+  doctor    Doctor     @relation(fields: [doctorId], references: [id])
+  patientId String
+  patient   Patient    @relation(fields: [patientId], references: [id])
+  fileId    String?    @unique
+  file      File?      @relation(fields: [fileId], references: [id])
+}
